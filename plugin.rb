@@ -22,9 +22,9 @@ end
 
 after_initialize do
   class ::OmniAuth::Strategies::Salesforce
-    option :client_options, authorize_url: '/oauth2/authorize',
+    option :client_options, authorize_url: '/services/oauth2/authorize',
                             site:  SiteSetting.salesforce_url,
-                            token_url: '/oauth2/token'
+                            token_url: '/services/oauth2/token'
   end
 end
 
