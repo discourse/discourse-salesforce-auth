@@ -1,0 +1,5 @@
+en:
+  site_settings:
+    salesforce_client_id: "oauth2 client id"
+    salesforce_client_secret: "oauth2 client secret"
+    salesforce_url: "url to use for login"
