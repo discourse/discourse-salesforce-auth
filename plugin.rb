@@ -24,9 +24,9 @@ end
 
 after_initialize do
   class ::OmniAuth::Strategies::Salesforce
-    option :client_options, authorize_url: '/services/oauth2/authorize',
+    option :client_options, authorize_url: '/ind/services/oauth2/authorize',
                             site:  SiteSetting.salesforce_url,
-                            token_url: '/services/oauth2/token'
+                            token_url: '/ind/services/oauth2/token'
   end
 end
 
@@ -39,8 +39,8 @@ class OmniAuth::Strategies::Salesforce < OmniAuth::Strategies::OAuth2
   MOBILE_USER_AGENTS =  'webos|ipod|iphone|ipad|android|blackberry|mobile'
 
   option :client_options, {
-    :authorize_url => '/services/oauth2/authorize',
-    :token_url     => '/services/oauth2/token'
+    :authorize_url => '/ind/services/oauth2/authorize',
+    :token_url     => '/ind/services/oauth2/token'
   }
   option :authorize_options, [
     :scope,
