@@ -114,8 +114,7 @@ end
 
 auth_provider title: 'Sign in with Salesforce',
               message: 'Log in using your Salesforce account. (Make sure your popup blocker is disabled.)',
-              frame_width: 920,
-              frame_height: 800,
+              full_screen_login: true,
               authenticator: SalesforceAuthenticator.new('salesforce',
                                                           trusted: true,
                                                           auto_create_account: true)
