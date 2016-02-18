@@ -18,6 +18,16 @@ class SalesforceAuthenticator < ::Auth::OAuth2Authenticator
               strategy.options[:client_secret] = SiteSetting.salesforce_client_secret
         }
   end
+
+  def after_authenticate(auth_token)
+    result = super
+
+    if result.user && result.email && (result.user.email != result.email)
+      result.user.update_columns(email: result.email)
+    end
+
+    result
+  end
 end
 
 
