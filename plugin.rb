@@ -90,7 +90,7 @@ class OmniAuth::Strategies::Salesforce < OmniAuth::Strategies::OAuth2
   uid { raw_info['id'] }
 
   info do
-    # Rails.logger.warn("oauth info #{raw_info.inspect}")
+    Rails.logger.warn("oauth info #{raw_info.inspect}")
     {
       'name'            => raw_info['display_name'],
       'email'           => raw_info['email'],
