@@ -22,7 +22,17 @@ class SalesforceAuthenticator < ::Auth::OAuth2Authenticator
   def after_authenticate(auth_token)
     result = super
 
-    Rails.logger.warn("country is #{auth_token[:info][:country]} #{auth_token[:info][:country]}")
+    if result.user && result.user.id && (country = auth_token[:info][:country])
+      country_field = UserCustomField.find_by(user_id: result.user.id, name: 'country')
+
+      # just in case
+      country = country.to_s
+      if country_field
+        country_field.update_columns(value: country) unless country_field.value == country
+      else
+        UserCustomField.create(user_id: result.user.id, name: 'country', value: country)
+      end
+    end
 
     if result.user && result.email && (result.user.email != result.email)
       begin
