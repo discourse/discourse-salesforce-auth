@@ -22,6 +22,8 @@ class SalesforceAuthenticator < ::Auth::OAuth2Authenticator
   def after_authenticate(auth_token)
     result = super
 
+    Rails.logger.warn("country is #{auth_token[:info][:country]} #{auth_token[:info][:country]}")
+
     if result.user && result.email && (result.user.email != result.email)
       begin
         result.user.update_columns(email: result.email)
@@ -90,7 +92,6 @@ class OmniAuth::Strategies::Salesforce < OmniAuth::Strategies::OAuth2
   uid { raw_info['id'] }
 
   info do
-    Rails.logger.warn("oauth info #{raw_info.inspect}")
     {
       'name'            => raw_info['display_name'],
       'email'           => raw_info['email'],
@@ -101,7 +102,8 @@ class OmniAuth::Strategies::Salesforce < OmniAuth::Strategies::OAuth2
       'description'     => '',
       'image'           => raw_info['photos']['thumbnail'] + "?oauth_token=#{access_token.token}",
       'phone'           => '',
-      'urls'            => raw_info['urls']
+      'urls'            => raw_info['urls'],
+      'country'         => raw_info['custom_attributes'] && raw_info['custom_attributes']['country']
     }
   end
 
