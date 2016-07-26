@@ -39,7 +39,7 @@ class SalesforceAuthenticator < ::Auth::OAuth2Authenticator
         result.user.update_columns(email: result.email)
       rescue
         used_by = User.find_by(email: result.email).try(:username)
-        Rails.logger.warn("FAILED to update email for #{user.username} to #{result.email} cause it is in use by #{used_by}")
+        Rails.logger.warn("FAILED to update email for #{result.user.username} to #{result.email} cause it is in use by #{used_by}")
       end
     end
 
