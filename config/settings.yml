@@ -2,3 +2,4 @@ plugins:
   salesforce_client_id: ""
   salesforce_client_secret: ""
   salesforce_url: ""
+  salesforce_verbose_log: false

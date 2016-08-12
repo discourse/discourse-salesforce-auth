@@ -102,6 +102,9 @@ class OmniAuth::Strategies::Salesforce < OmniAuth::Strategies::OAuth2
   uid { raw_info['id'] }
 
   info do
+    if SiteSetting.salesforce_verbose_log
+      Rails.logger.warn("Salesforce verbose log:\n #{raw_info.inspect}")
+    end
     {
       'name'            => raw_info['display_name'],
       'email'           => raw_info['email'],
