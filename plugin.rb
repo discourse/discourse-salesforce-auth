@@ -19,20 +19,36 @@ class SalesforceAuthenticator < ::Auth::OAuth2Authenticator
         }
   end
 
-  def after_authenticate(auth_token)
-    result = super
-
-    if result.user && result.user.id && (country = auth_token[:info][:country])
-      country_field = UserCustomField.find_by(user_id: result.user.id, name: 'country')
+  def ensure_country(user, country)
+    if user && user.id && country
+      country_field = UserCustomField.find_by(user_id: user.id, name: 'country')
 
       # just in case
       country = country.to_s
       if country_field
         country_field.update_columns(value: country) unless country_field.value == country
       else
-        UserCustomField.create(user_id: result.user.id, name: 'country', value: country)
+        UserCustomField.create(user_id: user.id, name: 'country', value: country)
       end
     end
+  end
+
+  def after_create_account(user, auth)
+    ensure_country(user, auth[:extra_data][:country])
+  end
+
+
+
+  def after_authenticate(auth_token)
+    result = super
+
+    country = auth_token[:info][:country]
+
+    result.extra_data = {
+      country: country
+    }
+
+    ensure_country(result.user, country)
 
     if result.user && result.email && (result.user.email != result.email)
       begin
